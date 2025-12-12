@@ -36,7 +36,7 @@ const Navbar = () => {
                                 ) : (
                                     <Link to="/dashboard" className="nav-link">
                                         <User size={16} />
-                                        Dashboard
+                                        My Bucket
                                     </Link>
                                 )}
                                 <button
