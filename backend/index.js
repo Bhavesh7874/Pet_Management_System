@@ -4,7 +4,12 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 
 dotenv.config();
-connectDB();
+connectDB().then(async () => {
+    const seedData = require('./seed');
+    await seedData();
+}).catch((err) => {
+    console.error('Error in DB Connection or Seeding:', err);
+});
 
 const app = express();
 
