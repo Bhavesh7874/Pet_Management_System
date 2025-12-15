@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { API_BASE_URL } from '../utils/constants';
-import PetCard from '../components/PetCard';
+import { Link } from 'react-router-dom';
+
+import { getPets } from '../../services/pets.service';
+import PetCard from '../../shared/components/PetCard';
+import Pagination from '../../shared/components/Pagination';
+import FilterPanel from './components/FilterPanel';
 import { Search, SlidersHorizontal, ArrowRight, Heart } from 'lucide-react';
 
 const Home = () => {
@@ -12,31 +14,64 @@ const Home = () => {
     const [pageNumber, setPageNumber] = useState(1);
     const [pages, setPages] = useState(1);
     const [page, setPage] = useState(1);
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [filters, setFilters] = useState({
+        category: '',
+        species: '',
+        breed: '',
+        minPrice: '',
+        maxPrice: ''
+    });
+
+    const fetchPets = async () => {
+        try {
+            const query = { ...filters, pageNumber, keyword };
+            const data = await getPets(query);
+            setPets(data.pets);
+            setPages(data.pages);
+            setPage(data.page);
+            setLoading(false);
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchPets = async () => {
-            try {
-                let url = `${API_BASE_URL}/pets?pageNumber=${pageNumber}`;
-                if (keyword) {
-                    url += `&keyword=${keyword}`;
-                }
-                const { data } = await axios.get(url);
-                setPets(data.pets);
-                setPages(data.pages);
-                setPage(data.page);
-                setLoading(false);
-            } catch (error) {
-                console.error(error);
-                setLoading(false);
-            }
-        };
         fetchPets();
-    }, [pageNumber, keyword]);
+    }, [pageNumber, keyword]); // depend only on page/keyword trigger or explicit filter apply
 
     const handleSearch = (e) => {
         e.preventDefault();
-        setPageNumber(1); // Reset to first page on new search
-        // Trigger fetch via useEffect dependency
+        setPageNumber(1);
+    };
+
+    const handleFilterChange = (name, value) => {
+        setFilters({ ...filters, [name]: value });
+    };
+
+    const handleApplyFilters = () => {
+        setPageNumber(1);
+        fetchPets();
+        setIsFilterOpen(false);
+    };
+
+
+
+    // Re-implement clear properly
+    const realHandleClear = async () => {
+        const emptyFilters = { category: '', species: '', breed: '', minPrice: '', maxPrice: '' };
+        setFilters(emptyFilters);
+        setPageNumber(1);
+
+        // Manual fetch with empty filters
+        try {
+            const data = await getPets({ pageNumber: 1, keyword });
+            setPets(data.pets);
+            setPages(data.pages);
+            setPage(data.page);
+        } catch (e) { console.error(e); }
+        setIsFilterOpen(false);
     };
 
     return (
@@ -74,10 +109,20 @@ const Home = () => {
             {/* Pet Grid */}
             <div className="section-header" style={{ marginBottom: '2rem' }}>
                 <h2 className="text-2xl font-bold" style={{ fontSize: '1.875rem' }}>Available Pets</h2>
-                <button className="btn btn-secondary" style={{ gap: '0.5rem' }}>
+                <button className="btn btn-secondary" style={{ gap: '0.5rem' }} onClick={() => setIsFilterOpen(true)}>
+                    <SlidersHorizontal size={20} />
                     Filters
                 </button>
             </div>
+
+            <FilterPanel
+                filters={filters}
+                onFilterChange={handleFilterChange}
+                onApplyFilters={handleApplyFilters}
+                onClearFilters={realHandleClear}
+                onClose={() => setIsFilterOpen(false)}
+                isOpen={isFilterOpen}
+            />
 
             {loading ? (
                 <div className="loading-spinner-container">
@@ -133,6 +178,14 @@ const Home = () => {
                         </div>
                     )}
                 </div>
+            )}
+
+            {!loading && (
+                <Pagination
+                    page={page}
+                    pages={pages}
+                    onPageChange={(page) => setPageNumber(page)}
+                />
             )}
         </div>
     );

@@ -63,7 +63,7 @@ const getPetById = async (req: Request, res: Response): Promise<void> => {
 // @access  Private/Admin
 const createPet = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { name, species, breed, age, description, category, price } = req.body;
+        const { name, species, breed, age, description, category } = req.body;
         let images: string[] = [];
 
         if (req.file) {
@@ -86,7 +86,6 @@ const createPet = async (req: AuthRequest, res: Response): Promise<void> => {
             description,
             images, // Store Base64 string
             category,
-            price,
         });
         res.status(201).json(pet);
     } catch (error) {

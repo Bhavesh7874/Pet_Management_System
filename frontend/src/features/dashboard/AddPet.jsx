@@ -1,23 +1,16 @@
-import { useContext } from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { API_BASE_URL } from '../utils/constants';
-import AuthContext from '../context/AuthContext';
-import PetForm from '../components/PetForm';
+
+import { createPet } from '../../services/pets.service';
+import PetForm from './components/PetForm';
 import { ArrowLeft } from 'lucide-react';
 
 const AddPet = () => {
-    const { user } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleSubmit = async (petData) => {
         try {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${user.token}`,
-                },
-            };
-            await axios.post(`${API_BASE_URL}/pets`, petData, config);
+            await createPet(petData);
             navigate('/admin');
         } catch (error) {
             console.error(error);

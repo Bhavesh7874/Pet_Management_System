@@ -1,25 +1,21 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { API_BASE_URL } from '../utils/constants';
-import AuthContext from '../context/AuthContext';
-import PetForm from '../components/PetForm';
+
+import { getPetById, updatePet } from '../../services/pets.service';
+import PetForm from './components/PetForm';
 import { ArrowLeft } from 'lucide-react';
 
 
 const EditPet = () => {
     const [pet, setPet] = useState(null);
-    const [loading, setLoading] = useState(true);
     const { id } = useParams();
-    const { user } = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPet = async () => {
             try {
-                const { data } = await axios.get(`${API_BASE_URL}/pets/${id}`);
+                const data = await getPetById(id);
                 setPet(data);
-                setLoading(false);
             } catch (error) {
                 console.error(error); // Fixed console.error
                 alert('Failed to fetch pet details');
@@ -31,12 +27,7 @@ const EditPet = () => {
 
     const handleSubmit = async (petData) => {
         try {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${user.token}`,
-                },
-            };
-            await axios.put(`${API_BASE_URL}/pets/${id}`, petData, config);
+            await updatePet(id, petData);
             navigate('/admin');
         } catch (error) {
             console.error(error);

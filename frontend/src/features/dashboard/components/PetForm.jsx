@@ -11,7 +11,7 @@ const PetForm = ({ onSubmit, initialData = null, buttonLabel = 'Save Pet' }) => 
         imageFile: null,
         status: 'available',
         category: 'adoption',
-        price: '0'
+
     });
 
     useEffect(() => {
@@ -26,7 +26,7 @@ const PetForm = ({ onSubmit, initialData = null, buttonLabel = 'Save Pet' }) => 
                 imageFile: null,
                 status: initialData.status || 'available',
                 category: initialData.category || 'adoption',
-                price: initialData.price || '0'
+
             });
         }
     }, [initialData]);
@@ -50,9 +50,7 @@ const PetForm = ({ onSubmit, initialData = null, buttonLabel = 'Save Pet' }) => 
         formData.append('description', formDataState.description);
         formData.append('status', formDataState.status);
         formData.append('category', formDataState.category);
-        if (formDataState.category === 'sale') {
-            formData.append('price', formDataState.price);
-        }
+
         if (formDataState.imageFile) {
             formData.append('image', formDataState.imageFile);
         } else if (formDataState.imageUrl) {
@@ -87,15 +85,9 @@ const PetForm = ({ onSubmit, initialData = null, buttonLabel = 'Save Pet' }) => 
                     <label className="label">Category</label>
                     <select name="category" value={formDataState.category} onChange={handleChange} className="select">
                         <option value="adoption">Adoption</option>
-                        <option value="sale">Sale</option>
                     </select>
                 </div>
-                {formDataState.category === 'sale' && (
-                    <div className="form-group">
-                        <label className="label">Price ($)</label>
-                        <input name="price" type="number" value={formDataState.price} onChange={handleChange} className="input" min="0" />
-                    </div>
-                )}
+
             </div>
             <div className="form-group">
                 <label className="label">Image</label>

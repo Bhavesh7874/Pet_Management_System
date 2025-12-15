@@ -1,10 +1,9 @@
-import { useState, useEffect, useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-
-import { API_BASE_URL } from '../utils/constants';
-import AuthContext from '../context/AuthContext';
-import StatusBadge from '../components/StatusBadge';
+import { getPets, deletePet } from '../../services/pets.service';
+import { getApplications, updateApplicationStatus } from '../../services/applications.service';
+import AuthContext from '../auth/AuthContext';
+import StatusBadge from '../../shared/components/StatusBadge';
 import { LayoutDashboard, FileText, Plus, Trash2, Edit, Table as TableIcon, Grid } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -15,17 +14,13 @@ const AdminDashboard = () => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const config = user && user.token ? {
-        headers: { Authorization: `Bearer ${user.token}` },
-    } : {};
-
     const fetchData = async () => {
         try {
             if (activeTab === 'pets') {
-                const { data } = await axios.get(`${API_BASE_URL}/pets?limit=100`, config);
+                const data = await getPets({ limit: 100 });
                 setPets(data.pets);
             } else if (user && user.token) {
-                const { data } = await axios.get(`${API_BASE_URL}/applications`, config);
+                const data = await getApplications();
                 setApplications(data);
             }
         } catch (error) {
@@ -39,21 +34,19 @@ const AdminDashboard = () => {
 
     const handleDeletePet = async (id) => {
         if (!window.confirm('Are you sure?')) return;
-        if (!user || !user.token) return;
         try {
-            await axios.delete(`http://localhost:5000/api/pets/${id}`, config);
+            await deletePet(id);
             fetchData();
-        } catch (error) {
+        } catch {
             alert('Failed to delete pet');
         }
     };
 
     const handleStatusUpdate = async (id, status) => {
-        if (!user || !user.token) return;
         try {
-            await axios.put(`http://localhost:5000/api/applications/${id}/status`, { status }, config);
+            await updateApplicationStatus(id, status);
             fetchData();
-        } catch (error) {
+        } catch {
             alert('Failed to update status');
         }
     };
@@ -134,7 +127,7 @@ const AdminDashboard = () => {
                                         <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.25rem' }}>{pet.name}</h3>
                                         <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>{pet.species} • {pet.breed}</p>
                                         <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--primary)', marginBottom: '1.5rem' }}>
-                                            {pet.category === 'sale' ? `For Sale: $${pet.price}` : 'For Adoption'}
+                                            For Adoption
                                         </p>
                                     </div>
                                     <div style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto' }}>
@@ -156,7 +149,7 @@ const AdminDashboard = () => {
                                         <th>Image</th>
                                         <th>Name</th>
                                         <th>Details</th>
-                                        <th>Price</th>
+
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -176,9 +169,8 @@ const AdminDashboard = () => {
                                                 <div style={{ fontSize: '0.875rem' }}>{pet.species}</div>
                                                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{pet.breed}</div>
                                             </td>
-                                            <td style={{ fontWeight: 500 }}>
-                                                {pet.category === 'sale' ? `$${pet.price}` : 'Free'}
-                                            </td>
+
+
                                             <td><StatusBadge status={pet.status} /></td>
                                             <td>
                                                 <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -225,7 +217,7 @@ const AdminDashboard = () => {
                                     <td>
                                         <span className={`badge ${app.pet?.category === 'sale' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}
                                             style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem', borderRadius: '999px', background: app.pet?.category === 'sale' ? '#dcfce7' : '#dbeafe', color: app.pet?.category === 'sale' ? '#166534' : '#1e40af' }}>
-                                            {app.pet?.category === 'sale' ? `Buy ($${app.pet?.price})` : 'Adopt'}
+                                            Adopt
                                         </span>
                                     </td>
                                     <td>

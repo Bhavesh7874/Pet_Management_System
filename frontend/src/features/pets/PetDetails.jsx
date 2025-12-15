@@ -1,10 +1,11 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { API_BASE_URL } from '../utils/constants';
-import AuthContext from '../context/AuthContext';
-import StatusBadge from '../components/StatusBadge';
-import Modal from '../components/Modal';
+
+import { getPetById } from '../../services/pets.service';
+import { createApplication } from '../../services/applications.service';
+import AuthContext from '../auth/AuthContext';
+import StatusBadge from '../../shared/components/StatusBadge';
+import Modal from '../../shared/components/Modal';
 import { Calendar } from 'lucide-react';
 
 const PetDetails = () => {
@@ -19,7 +20,7 @@ const PetDetails = () => {
     useEffect(() => {
         const fetchPet = async () => {
             try {
-                const { data } = await axios.get(`${API_BASE_URL}/pets/${id}`);
+                const data = await getPetById(id);
                 setPet(data);
                 setLoading(false);
             } catch (error) {
@@ -38,21 +39,14 @@ const PetDetails = () => {
         setIsModalOpen(true);
     };
 
-    const isSale = pet?.category === 'sale';
-    const actionLabel = isSale ? 'Buy' : 'Adopt';
+    const actionLabel = 'Adopt';
 
     const submitApplication = async (e) => {
         e.preventDefault();
         try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${user.token}`,
-                },
-            };
-            await axios.post(`${API_BASE_URL}/applications`, { petId: id, message }, config);
+            await createApplication(id, message);
             setIsModalOpen(false);
-            alert(`${isSale ? 'Purchase request' : 'Adoption application'} submitted successfully!`);
+            alert('Adoption application submitted successfully!');
             navigate('/dashboard');
         } catch (error) {
             alert(error.response?.data?.message || 'Application failed');
@@ -114,12 +108,7 @@ const PetDetails = () => {
                                     <p style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Status</p>
                                     <p style={{ fontWeight: 700, fontSize: '1rem', textTransform: 'capitalize' }}>{pet.status}</p>
                                 </div>
-                                {isSale && (
-                                    <div style={{ background: 'white', padding: '1rem', gridColumn: 'span 2', borderRadius: 'var(--radius-lg)', textAlign: 'center' }}>
-                                        <p style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Price</p>
-                                        <p style={{ fontWeight: 800, fontSize: '1.5rem', color: 'var(--primary)' }}>${pet.price}</p>
-                                    </div>
-                                )}
+
                             </div>
                         </div>
 
@@ -133,7 +122,7 @@ const PetDetails = () => {
                             </button>
                         ) : (
                             <div className="card" style={{ textAlign: 'center', background: 'var(--background)', color: 'var(--text-muted)' }}>
-                                This pet is currently not available for {isSale ? 'purchase' : 'adoption'}.
+                                This pet is currently not available for adoption.
                             </div>
                         )}
                     </div>
@@ -147,18 +136,15 @@ const PetDetails = () => {
                     <form onSubmit={submitApplication} className="auth-form" style={{ padding: 0, boxShadow: 'none', border: 'none' }}>
                         <div className="form-group">
                             <label className="label">
-                                {isSale
-                                    ? `Message to Seller (Optional)`
-                                    : `Why do you want to adopt ${pet.name}?`
-                                }
+                                Why do you want to adopt {pet.name}?
                             </label>
                             <textarea
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                                 className="textarea"
                                 style={{ height: '8rem', resize: 'none' }}
-                                placeholder={isSale ? "I'm interested in buying this pet..." : "Tell us about yourself and your home..."}
-                                required={!isSale}
+                                placeholder="Tell us about yourself and your home..."
+                                required
                             />
                         </div>
                         <button

@@ -1,9 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
-import AuthContext from '../context/AuthContext';
-import StatusBadge from '../components/StatusBadge';
+import AuthContext from '../auth/AuthContext';
+import StatusBadge from '../../shared/components/StatusBadge';
 import { PawPrint, Calendar, Table as TableIcon, Grid } from 'lucide-react';
-import { API_BASE_URL } from '../utils/constants';
+import { getUserApplications } from '../../services/applications.service';
 
 const Dashboard = () => {
     const { user, loading: authLoading } = useContext(AuthContext);
@@ -17,10 +16,7 @@ const Dashboard = () => {
 
         const fetchApplications = async () => {
             try {
-                const config = {
-                    headers: { Authorization: `Bearer ${user.token}` },
-                };
-                const { data } = await axios.get(`${API_BASE_URL}/applications/my`, config);
+                const data = await getUserApplications();
                 setApplications(data);
                 setLoading(false);
             } catch (error) {
