@@ -20,6 +20,7 @@ A full-stack Pet Management Application built with the MERN stack (MongoDB, Expr
 
 1.  **Clone the repository**.
 2.  **Install Dependencies**:
+
     ```bash
     # Backend
     cd backend
@@ -29,6 +30,7 @@ A full-stack Pet Management Application built with the MERN stack (MongoDB, Expr
     cd ../frontend
     npm install
     ```
+
 3.  **Environment Variables**:
     Create a `.env` file in the `backend` directory:
     ```
@@ -43,6 +45,7 @@ A full-stack Pet Management Application built with the MERN stack (MongoDB, Expr
     node seed.js
     ```
 5.  **Run the Application**:
+
     ```bash
     # Backend (from backend directory)
     npm run dev
@@ -54,11 +57,13 @@ A full-stack Pet Management Application built with the MERN stack (MongoDB, Expr
 ## Default Credentials
 
 **Admin Account:**
+
 - Email: `patilbhavesh7874@gmail.com`
 - Password: `Test@123`
 
 **User Account:**
-- Email: `user@example.com`
-- Password: `userpassword`
+
+- Email: `patilbhavesh7874+user@gmail.com`
+- Password: `Test@123`
 
 > **Note:** If the database is empty, run `npm run seed` in the backend directory.
