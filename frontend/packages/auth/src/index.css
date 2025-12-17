@@ -784,3 +784,43 @@ img {
 .register-btn {
   margin-left: 30px;
 }
+
+/* AUTH SPECIFIC UTILITIES */
+.text-center {
+  text-align: center;
+}
+
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.auth-subtitle {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text-muted);
+}
+
+.signup-btn {
+  margin-left: 30px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background-size: 200% 200%;
+  color: white;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+  border: none;
+}

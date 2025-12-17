@@ -687,6 +687,200 @@ img {
   }
 }
 
+/* DASHBOARD SPECIFIC STYLES */
+.dashboard-container {
+  max-width: 72rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.dashboard-container-sm {
+  max-width: 56rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 0.5rem;
+  background: var(--surface);
+  padding: 0.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.view-toggle-btn {
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+}
+
+.view-toggle-btn.active {
+  background: var(--background);
+  color: var(--text-main);
+}
+
+.view-toggle-btn.inactive {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 5rem 2rem;
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  border: 2px dashed var(--border);
+  color: var(--text-muted);
+}
+
+/* Dashboard Card Styles */
+.dashboard-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+  border: none;
+}
+
+.card-image-wrapper {
+  position: relative;
+  height: 14rem;
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+/* For admin cards where all corners are rounded because image is separate */
+.card-image-wrapper.rounded-all {
+  border-radius: var(--radius-lg);
+  margin-bottom: 1rem;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+}
+
+.card-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.card-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.card-highlight {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+}
+
+.card-message {
+  color: var(--text-secondary);
+  font-style: italic;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.75rem;
+  color: var(--text-light);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-footer {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+}
+
+/* Table Helper Styles */
+.table-image {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+
+.table-cell-title {
+  font-weight: 600;
+}
+
+.table-cell-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.table-action-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.badge-pill {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.border-none {
+  border: none;
+}
+
 .table-container {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(20px);
@@ -750,4 +944,71 @@ img {
 .btn-danger:hover {
   background: #fecaca;
   color: #b91c1c;
+}
+
+/* Pet Card Styles Matching Public Site */
+.pet-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 2rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  backface-visibility: hidden;
+}
+
+.pet-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.9);
+  background: white;
+}
+
+.pet-image-container {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  /* Adjusted slightly smaller for admin view if needed, but keeping consistent */
+  overflow: hidden;
+  background-color: var(--surface-alt);
+}
+
+.pet-image-blur {
+  position: absolute;
+  inset: -20px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(30px) saturate(1.5) brightness(0.9);
+  opacity: 0.8;
+  transition: transform 0.8s ease;
+  z-index: 1;
+}
+
+.pet-card:hover .pet-image-blur {
+  transform: scale(1.2) rotate(2deg);
+}
+
+.pet-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+}
+
+.pet-card:hover .pet-image {
+  transform: scale(1.1) translateY(-5px);
+}
+
+.pet-card-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }

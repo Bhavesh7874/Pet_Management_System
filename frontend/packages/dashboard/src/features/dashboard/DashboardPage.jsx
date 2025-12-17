@@ -37,36 +37,22 @@ const Dashboard = () => {
     if (loading) return <div className="loading-spinner-container"><div className="loading-spinner"></div></div>;
 
     return (
-        <div className="container" style={{ maxWidth: '56rem', margin: '0 auto' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <h1 className="section-header" style={{ fontSize: '1.875rem', fontWeight: 700, marginBottom: 0 }}>My Adoption Applications</h1>
+        <div className="dashboard-container-sm">
+            <div className="dashboard-header">
+                <h1 className="section-title">My Adoption Applications</h1>
 
                 {applications.length > 0 && (
-                    <div style={{ display: 'flex', gap: '0.5rem', background: 'var(--surface)', padding: '0.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+                    <div className="view-toggle">
                         <button
                             onClick={() => setViewMode('grid')}
-                            style={{
-                                padding: '0.5rem',
-                                borderRadius: 'var(--radius-sm)',
-                                background: viewMode === 'grid' ? 'var(--background)' : 'transparent',
-                                color: viewMode === 'table' ? 'white' : '#030303ff',
-                                cursor: 'pointer',
-                                border: 'none'
-                            }}
+                            className={`view-toggle-btn ${viewMode === 'grid' ? 'active' : 'inactive'}`}
                             title="Grid View"
                         >
                             <Grid size={20} />
                         </button>
                         <button
                             onClick={() => setViewMode('table')}
-                            style={{
-                                padding: '0.5rem',
-                                borderRadius: 'var(--radius-sm)',
-                                background: viewMode === 'table' ? 'var(--background)' : 'transparent',
-                                color: viewMode === 'table' ? 'white' : '#030303ff',
-                                cursor: 'pointer',
-                                border: 'none'
-                            }}
+                            className={`view-toggle-btn ${viewMode === 'table' ? 'active' : 'inactive'}`}
                             title="Table View"
                         >
                             <TableIcon size={20} />
@@ -76,7 +62,7 @@ const Dashboard = () => {
             </div>
 
             {applications.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '5rem 2rem', background: 'var(--surface)', borderRadius: 'var(--radius-xl)', border: '2px dashed var(--border)', color: 'var(--text-muted)' }}>
+                <div className="empty-state">
                     <PawPrint size={64} style={{ margin: '0 auto', marginBottom: '1rem', color: '#cbd5e1' }} />
                     <p style={{ fontSize: '1.25rem', fontWeight: 500 }}>You haven't applied for any pets yet.</p>
                 </div>
@@ -85,30 +71,30 @@ const Dashboard = () => {
                     {viewMode === 'grid' ? (
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-lg">
                             {applications.map((app) => (
-                                <div key={app._id} className="card" style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: 0 }}>
-                                    <div style={{ position: 'relative', height: '14rem', borderTopLeftRadius: 'var(--radius-lg)', borderTopRightRadius: 'var(--radius-lg)', overflow: 'hidden' }}>
+                                <div key={app._id} className="card dashboard-card">
+                                    <div className="card-image-wrapper">
                                         <img
                                             src={app.pet?.images && app.pet.images.length > 0 ? app.pet.images[0] : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80'}
                                             alt={app.pet?.name || 'Pet'}
-                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            className="card-image"
                                         />
-                                        <div style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
+                                        <div className="card-badge">
                                             <StatusBadge status={app.status} />
                                         </div>
                                     </div>
-                                    <div style={{ padding: '1.5rem', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                                        <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.25rem' }}>
+                                    <div className="card-body">
+                                        <h3 className="card-title">
                                             {app.pet?.name || 'Unknown Pet'}
                                         </h3>
-                                        <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+                                        <p className="card-subtitle">
                                             {app.pet?.species || 'Unknown'} • {app.pet?.breed || 'Unknown'}
                                         </p>
 
-                                        <p style={{ color: 'var(--text-secondary)', fontStyle: 'italic', fontSize: '0.9rem', marginBottom: '1rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                        <p className="card-message">
                                             "{app.message}"
                                         </p>
 
-                                        <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--border)', fontSize: '0.75rem', color: 'var(--text-light)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                        <div className="card-footer">
                                             <Calendar size={14} />
                                             Applied on {new Date(app.createdAt).toLocaleDateString()}
                                         </div>
@@ -134,13 +120,13 @@ const Dashboard = () => {
                                                 <img
                                                     src={app.pet?.images && app.pet.images.length > 0 ? app.pet.images[0] : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80'}
                                                     alt={app.pet?.name}
-                                                    style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover' }}
+                                                    className="table-image"
                                                 />
                                             </td>
-                                            <td style={{ fontWeight: 600 }}>{app.pet?.name || 'Unknown'}</td>
+                                            <td className="table-cell-title">{app.pet?.name || 'Unknown'}</td>
                                             <td>
                                                 <div style={{ fontSize: '0.875rem', fontStyle: 'italic', color: 'var(--text-secondary)' }}>"{app.message}"</div>
-                                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+                                                <div className="table-cell-sub" style={{ marginTop: '0.25rem' }}>
                                                     Applied: {new Date(app.createdAt).toLocaleDateString()}
                                                 </div>
                                             </td>

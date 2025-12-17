@@ -53,12 +53,12 @@ const PetDetails = () => {
         }
     };
 
-    if (loading) return <div className="flex justify-center py-20"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-500"></div></div>;
-    if (!pet) return <div className="text-center py-20 text-xl text-gray-600">Pet not found</div>;
+    if (loading) return <div className="loading-spinner-container"><div className="loading-spinner"></div></div>;
+    if (!pet) return <div className="text-center py-20 text-xl text-muted">Pet not found</div>;
 
     return (
-        <div className="container animate-fade-in-up" style={{ paddingBottom: '4rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <div className="container animate-fade-in-up pb-4">
+            <div className="grid gap-8">
                 {/* Hero / Image Section */}
                 <div className="pet-details-hero">
                     <div
@@ -75,39 +75,39 @@ const PetDetails = () => {
                 <div className="pet-details-grid">
                     {/* Main Info */}
                     <div className="info-card">
-                        <div style={{ marginBottom: '1.5rem' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                                <span className="badge" style={{ background: 'var(--primary-light)', color: 'var(--primary)', fontSize: '0.875rem' }}>
+                        <div className="mb-8">
+                            <div className="grid grid-cols-2 gap-4 items-center mb-8" style={{ display: 'flex' }}>
+                                <span className="badge-species">
                                     {pet.species}
                                 </span>
                                 <StatusBadge status={pet.status} />
                             </div>
-                            <h1 style={{ fontSize: '3.5rem', fontWeight: 800, marginBottom: '0.5rem', lineHeight: 1 }}>{pet.name}</h1>
-                            <p style={{ fontSize: '1.5rem', color: 'var(--text-muted)', fontWeight: 500 }}>{pet.breed}</p>
+                            <h1 className="pet-title">{pet.name}</h1>
+                            <p className="pet-breed-large">{pet.breed}</p>
                         </div>
 
                         <div>
-                            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <h3 className="about-header">
                                 About {pet.name}
                             </h3>
-                            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.1rem' }}>
+                            <p className="text-secondary leading-relaxed text-lg">
                                 {pet.description}
                             </p>
                         </div>
                     </div>
 
                     {/* Sidebar / Actions */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                        <div className="card" style={{ background: 'var(--surface-alt)', border: 'none' }}>
-                            <div className="grid grid-cols-2 gap-md">
+                    <div className="grid gap-6">
+                        <div className="card bg-surface-alt border-none">
+                            <div className="grid md:grid-cols-2 gap-md">
                                 <div className="stat-card">
                                     <Calendar size={24} style={{ color: 'var(--secondary)', margin: '0 auto 0.5rem' }} />
                                     <p className="stat-label">Age</p>
-                                    <p className="stat-value">{pet.age} <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>yrs</span></p>
+                                    <p className="stat-value">{pet.age} <span className="text-sm font-medium">yrs</span></p>
                                 </div>
                                 <div className="stat-card">
                                     <p className="stat-label">Status</p>
-                                    <p className="stat-value" style={{ fontSize: '1rem', textTransform: 'capitalize' }}>{pet.status}</p>
+                                    <p className="stat-value text-base capitalize">{pet.status}</p>
                                 </div>
                             </div>
                         </div>
@@ -115,13 +115,12 @@ const PetDetails = () => {
                         {pet.status === 'available' ? (
                             <button
                                 onClick={handleAdoptClick}
-                                className="btn btn-primary"
-                                style={{ width: '100%', padding: '1.25rem', fontSize: '1.125rem' }}
+                                className="btn btn-primary adopt-btn-lg"
                             >
                                 {actionLabel} {pet.name}
                             </button>
                         ) : (
-                            <div className="card" style={{ textAlign: 'center', background: 'var(--background)', color: 'var(--text-muted)' }}>
+                            <div className="unavailable-card">
                                 This pet is currently not available for adoption.
                             </div>
                         )}
@@ -133,7 +132,7 @@ const PetDetails = () => {
                     onClose={() => setIsModalOpen(false)}
                     title={`${actionLabel} ${pet.name}`}
                 >
-                    <form onSubmit={submitApplication} className="auth-form" style={{ padding: 0, boxShadow: 'none', border: 'none' }}>
+                    <form onSubmit={submitApplication} className="auth-form border-none shadow-none p-0">
                         <div className="form-group">
                             <label className="label">
                                 Why do you want to adopt {pet.name}?
@@ -141,16 +140,14 @@ const PetDetails = () => {
                             <textarea
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
-                                className="textarea"
-                                style={{ height: '8rem', resize: 'none' }}
+                                className="textarea textarea-lg"
                                 placeholder="Tell us about yourself and your home..."
                                 required
                             />
                         </div>
                         <button
                             type="submit"
-                            className="btn btn-primary"
-                            style={{ width: '100%' }}
+                            className="btn btn-primary w-full"
                         >
                             Submit Application
                         </button>

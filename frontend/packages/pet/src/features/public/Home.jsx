@@ -76,11 +76,11 @@ const Home = () => {
         <div>
             {/* Hero Section */}
             <div className="hero">
-                <div className="container" style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }}>
+                <div className="container h-full flex items-center relative">
                     <div className="hero-content">
                         <h1 className="hero-title">
                             Find your new <br />
-                            <span style={{ color: 'var(--primary)' }}>best friend</span>
+                            <span className="hero-span-primary">best friend</span>
                         </h1>
                         <p className="hero-text">
                             Browse through our list of lovely pets waiting for a home. Adopt, don't shop!
@@ -98,15 +98,15 @@ const Home = () => {
                         </form>
                     </div>
                     {/* Decorative Image/Pattern could go here */}
-                    <div className="hero-image" style={{ position: 'absolute', right: 0, bottom: '-2rem', opacity: 0.1, pointerEvents: 'none' }}>
+                    <div className="hero-image-decorative">
                     </div>
                 </div>
             </div>
 
             {/* Pet Grid */}
-            <div className="section-header" style={{ marginBottom: '2rem' }}>
-                <h2 className="text-2xl font-bold" style={{ fontSize: '1.875rem' }}>Available Pets</h2>
-                <button className="btn btn-secondary" style={{ gap: '0.5rem' }} onClick={() => setIsFilterOpen(true)}>
+            <div className="section-header">
+                <h2 className="text-3xl font-bold">Available Pets</h2>
+                <button className="btn btn-secondary gap-2" onClick={() => setIsFilterOpen(true)}>
                     <SlidersHorizontal size={20} />
                     Filters
                 </button>
@@ -131,7 +131,7 @@ const Home = () => {
                         <PetCard key={pet._id} pet={pet} index={index} />
                     ))}
                     {pets.length === 0 && (
-                        <div className="col-span-full text-center py-20 text-gray-500" style={{ gridColumn: '1 / -1', padding: '5rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                        <div className="empty-results">
                             No pets found matching your criteria.
                         </div>
                     )}

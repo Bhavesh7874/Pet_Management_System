@@ -52,10 +52,10 @@ const AdminDashboard = () => {
     };
 
     return (
-        <div style={{ maxWidth: '72rem', margin: '0 auto' }}>
-            <h1 className="section-header" style={{ fontSize: '1.875rem', fontWeight: 700 }}>Admin Dashboard</h1>
+        <div className="dashboard-container">
+            <h1 className="section-title text-center mb-8">Admin Dashboard</h1>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            <div className="dashboard-header">
                 <div style={{ display: 'flex', gap: '1rem' }}>
                     <button
                         onClick={() => setActiveTab('pets')}
@@ -74,31 +74,17 @@ const AdminDashboard = () => {
                 </div>
 
                 {activeTab === 'pets' && (
-                    <div style={{ display: 'flex', gap: '0.5rem', background: 'var(--surface)', padding: '0.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+                    <div className="view-toggle">
                         <button
                             onClick={() => setViewMode('grid')}
-                            style={{
-                                padding: '0.5rem',
-                                borderRadius: 'var(--radius-sm)',
-                                background: viewMode === 'grid' ? 'var(--background)' : 'transparent',
-                                color: viewMode === 'grid' ? 'white' : '#030303ff',
-                                cursor: 'pointer',
-                                border: 'none'
-                            }}
+                            className={`view-toggle-btn ${viewMode === 'grid' ? 'active' : 'inactive'}`}
                             title="Grid View"
                         >
                             <Grid size={20} />
                         </button>
                         <button
                             onClick={() => setViewMode('table')}
-                            style={{
-                                padding: '0.5rem',
-                                borderRadius: 'var(--radius-sm)',
-                                background: viewMode === 'table' ? 'var(--background)' : 'transparent',
-                                color: viewMode === 'table' ? 'white' : '#030303ff',
-                                cursor: 'pointer',
-                                border: 'none'
-                            }}
+                            className={`view-toggle-btn ${viewMode === 'table' ? 'active' : 'inactive'}`}
                             title="Table View"
                         >
                             <TableIcon size={20} />
@@ -116,27 +102,36 @@ const AdminDashboard = () => {
                     {viewMode === 'grid' ? (
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-lg">
                             {pets.map(pet => (
-                                <div key={pet._id} className="card" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                                    <div style={{ position: 'relative', height: '14rem', borderRadius: 'var(--radius-lg)', overflow: 'hidden', marginBottom: '1rem' }}>
-                                        <img src={pet.images[0] || 'https://via.placeholder.com/300'} alt={pet.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                        <div style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
+                                <div key={pet._id} className="pet-card">
+                                    <div className="pet-image-container">
+                                        <div
+                                            className="pet-image-blur"
+                                            style={{ backgroundImage: `url(${pet.images && pet.images.length > 0 ? pet.images[0] : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80'})` }}
+                                        ></div>
+                                        <img
+                                            src={pet.images && pet.images.length > 0 ? pet.images[0] : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80'}
+                                            alt={pet.name}
+                                            className="pet-image"
+                                        />
+                                        <div className="card-badge">
                                             <StatusBadge status={pet.status} />
                                         </div>
                                     </div>
-                                    <div>
-                                        <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.25rem' }}>{pet.name}</h3>
-                                        <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>{pet.species} • {pet.breed}</p>
-                                        <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--primary)', marginBottom: '1.5rem' }}>
-                                            For Adoption
-                                        </p>
-                                    </div>
-                                    <div style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto' }}>
-                                        <button onClick={() => navigate(`/admin/edit-pet/${pet._id}`)} className="btn btn-secondary" style={{ flex: 1, padding: '0.5rem', fontSize: '0.75rem' }}>
-                                            <Edit size={14} /> Edit
-                                        </button>
-                                        <button onClick={() => handleDeletePet(pet._id)} className="btn btn-danger" style={{ flex: 1, padding: '0.5rem', fontSize: '0.75rem' }}>
-                                            <Trash2 size={14} /> Delete
-                                        </button>
+
+                                    <div className="pet-card-content">
+                                        <div>
+                                            <h3 className="card-title">{pet.name}</h3>
+                                            <p className="card-subtitle">{pet.species} • {pet.breed}</p>
+                                        </div>
+
+                                        <div className="action-footer" style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+                                            <button onClick={() => navigate(`/admin/edit-pet/${pet._id}`)} className="btn btn-secondary action-btn">
+                                                <Edit size={14} /> Edit
+                                            </button>
+                                            <button onClick={() => handleDeletePet(pet._id)} className="btn btn-danger action-btn">
+                                                <Trash2 size={14} /> Delete
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -149,7 +144,6 @@ const AdminDashboard = () => {
                                         <th>Image</th>
                                         <th>Name</th>
                                         <th>Details</th>
-
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -161,30 +155,26 @@ const AdminDashboard = () => {
                                                 <img
                                                     src={pet.images[0] || 'https://via.placeholder.com/300'}
                                                     alt={pet.name}
-                                                    style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', objectFit: 'cover' }}
+                                                    className="table-image"
                                                 />
                                             </td>
-                                            <td style={{ fontWeight: 600 }}>{pet.name}</td>
+                                            <td className="table-cell-title">{pet.name}</td>
                                             <td>
                                                 <div style={{ fontSize: '0.875rem' }}>{pet.species}</div>
-                                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{pet.breed}</div>
+                                                <div className="table-cell-sub">{pet.breed}</div>
                                             </td>
-
-
                                             <td><StatusBadge status={pet.status} /></td>
                                             <td>
-                                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                                <div className="table-action-group">
                                                     <button
                                                         onClick={() => navigate(`/admin/edit-pet/${pet._id}`)}
-                                                        className="btn btn-secondary"
-                                                        style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}
+                                                        className="btn btn-secondary action-btn"
                                                     >
                                                         Edit
                                                     </button>
                                                     <button
                                                         onClick={() => handleDeletePet(pet._id)}
-                                                        className="btn btn-danger"
-                                                        style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}
+                                                        className="btn btn-danger action-btn"
                                                     >
                                                         Delete
                                                     </button>
@@ -215,22 +205,21 @@ const AdminDashboard = () => {
                                 <tr key={app._id}>
                                     <td style={{ fontWeight: 500 }}>{app.pet?.name || 'Unknown'}</td>
                                     <td>
-                                        <span className={`badge ${app.pet?.category === 'sale' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}
-                                            style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem', borderRadius: '999px', background: app.pet?.category === 'sale' ? '#dcfce7' : '#dbeafe', color: app.pet?.category === 'sale' ? '#166534' : '#1e40af' }}>
+                                        <span className={`badge-pill ${app.pet?.category === 'sale' ? 'badge-available' : 'badge-pending'}`}>
                                             Adopt
                                         </span>
                                     </td>
                                     <td>
                                         <div>{app.user?.name}</div>
-                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{app.user?.email}</div>
+                                        <div className="table-cell-sub">{app.user?.email}</div>
                                     </td>
                                     <td style={{ maxWidth: '20rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={app.message}>{app.message}</td>
                                     <td><StatusBadge status={app.status} /></td>
                                     <td>
                                         {app.status === 'pending' && (
-                                            <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                                <button onClick={() => handleStatusUpdate(app._id, 'approved')} className="badge badge-approved" style={{ cursor: 'pointer', border: 'none' }}>Approve</button>
-                                                <button onClick={() => handleStatusUpdate(app._id, 'rejected')} className="badge badge-rejected" style={{ cursor: 'pointer', border: 'none' }}>Reject</button>
+                                            <div className="table-action-group">
+                                                <button onClick={() => handleStatusUpdate(app._id, 'approved')} className="badge badge-approved cursor-pointer border-none">Approve</button>
+                                                <button onClick={() => handleStatusUpdate(app._id, 'rejected')} className="badge badge-rejected cursor-pointer border-none">Reject</button>
                                             </div>
                                         )}
                                     </td>

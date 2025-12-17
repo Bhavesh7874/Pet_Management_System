@@ -37,7 +37,7 @@ const Login = () => {
                 onClose={() => setSnackbarOpen(false)}
             />
             <h1 className="auth-title">Welcome Back</h1>
-            <p style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--text-muted)' }}>
+            <p className="auth-subtitle">
                 Please enter your details to sign in.
             </p>
             <form onSubmit={handleSubmit} className="auth-form">
@@ -65,8 +65,7 @@ const Login = () => {
                 </div>
                 <button
                     type="submit"
-                    className="btn btn-primary w-full"
-                    style={{ marginTop: '1rem', padding: '1rem' }}
+                    className="btn btn-primary w-full mt-4 p-4"
                 >
                     Sign In
                 </button>

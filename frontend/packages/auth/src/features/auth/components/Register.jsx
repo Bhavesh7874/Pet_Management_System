@@ -1,4 +1,5 @@
 import { useState, useContext } from 'react';
+import Snackbar from '../../../shared/components/Snackbar';
 import { useNavigate, Link } from 'react-router-dom';
 import AuthContext from '../AuthContext';
 
@@ -9,23 +10,32 @@ const Register = () => {
     const { register } = useContext(AuthContext);
     const navigate = useNavigate();
 
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMsg, setSnackbarMsg] = useState('');
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const userData = await register(name, email, password);
-            // Set cookie for cross-port access
-            document.cookie = `userInfo=${encodeURIComponent(JSON.stringify(userData))}; path=/; max-age=86400; SameSite=Lax`;
+            await register(name, email, password);
+            document.cookie = "token=dummy-token; path=/; domain=localhost";
             window.location.href = 'http://localhost:3000/dashboard';
-        } catch {
-            alert('Registration failed');
+        } catch (error) {
+            setSnackbarMsg(error.response?.data?.message || 'Registration failed');
+            setSnackbarOpen(true);
         }
     };
 
     return (
         <>
+            <Snackbar
+                message={snackbarMsg}
+                color="red"
+                open={snackbarOpen}
+                onClose={() => setSnackbarOpen(false)}
+            />
             <h1 className="auth-title">Create Account</h1>
-            <p style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--text-muted)' }}>
-                Join us to find your new best friend.
+            <p className="auth-subtitle">
+                Join our community and find your new best friend.
             </p>
             <form onSubmit={handleSubmit} className="auth-form">
                 <div className="form-group">
@@ -35,7 +45,7 @@ const Register = () => {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         className="input"
-                        placeholder="John Doe"
+                        placeholder="e.g., John Doe"
                         required
                     />
                 </div>
@@ -46,7 +56,7 @@ const Register = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="input"
-                        placeholder="user@example.com"
+                        placeholder="e.g., user@example.com"
                         required
                     />
                 </div>
@@ -63,10 +73,9 @@ const Register = () => {
                 </div>
                 <button
                     type="submit"
-                    className="btn btn-primary w-full"
-                    style={{ marginTop: '1rem', padding: '1rem' }}
+                    className="btn btn-primary w-full mt-4 p-4"
                 >
-                    Sign Up
+                    Create Account
                 </button>
                 <div className="auth-footer">
                     Already have an account? <a href="http://localhost:3001/login" className="auth-link register-btn">Sign In</a>

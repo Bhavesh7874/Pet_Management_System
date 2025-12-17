@@ -54,7 +54,7 @@ const Navbar = () => {
                                 </Link>
                                 <Link
                                     to="http://localhost:3001/register"
-                                    className="btn btn-primary"
+                                    className="btn signup-btn"
                                 >
                                     Sign Up
                                 </Link>
