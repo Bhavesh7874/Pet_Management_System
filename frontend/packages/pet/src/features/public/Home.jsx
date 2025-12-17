@@ -127,8 +127,8 @@ const Home = () => {
                 </div>
             ) : (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-lg">
-                    {pets.map((pet) => (
-                        <PetCard key={pet._id} pet={pet} />
+                    {pets.map((pet, index) => (
+                        <PetCard key={pet._id} pet={pet} index={index} />
                     ))}
                     {pets.length === 0 && (
                         <div className="col-span-full text-center py-20 text-gray-500" style={{ gridColumn: '1 / -1', padding: '5rem', textAlign: 'center', color: 'var(--text-muted)' }}>

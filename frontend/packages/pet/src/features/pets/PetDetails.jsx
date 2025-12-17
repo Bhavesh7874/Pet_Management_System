@@ -57,21 +57,24 @@ const PetDetails = () => {
     if (!pet) return <div className="text-center py-20 text-xl text-gray-600">Pet not found</div>;
 
     return (
-        <div className="container" style={{ paddingBottom: '4rem' }}>
+        <div className="container animate-fade-in-up" style={{ paddingBottom: '4rem' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                {/* Image Section */}
-                <div style={{ width: '100%', height: '400px', borderRadius: 'var(--radius-xl)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)' }}>
+                {/* Hero / Image Section */}
+                <div className="pet-details-hero">
+                    <div
+                        className="pet-details-hero-blur"
+                        style={{ backgroundImage: `url(${pet.images && pet.images.length > 0 ? pet.images[0] : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80'})` }}
+                    ></div>
                     <img
                         src={pet.images && pet.images.length > 0 ? pet.images[0] : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80'}
                         alt={pet.name}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                 </div>
 
                 {/* Content Section */}
-                <div className="grid md:grid-cols-3 gap-lg">
+                <div className="pet-details-grid">
                     {/* Main Info */}
-                    <div className="card" style={{ gridColumn: 'span 2' }}>
+                    <div className="info-card">
                         <div style={{ marginBottom: '1.5rem' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
                                 <span className="badge" style={{ background: 'var(--primary-light)', color: 'var(--primary)', fontSize: '0.875rem' }}>
@@ -79,13 +82,12 @@ const PetDetails = () => {
                                 </span>
                                 <StatusBadge status={pet.status} />
                             </div>
-                            <h1 style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '0.5rem', lineHeight: 1 }}>{pet.name}</h1>
-                            <p style={{ fontSize: '1.25rem', color: 'var(--text-muted)', fontWeight: 500 }}>{pet.breed}</p>
+                            <h1 style={{ fontSize: '3.5rem', fontWeight: 800, marginBottom: '0.5rem', lineHeight: 1 }}>{pet.name}</h1>
+                            <p style={{ fontSize: '1.5rem', color: 'var(--text-muted)', fontWeight: 500 }}>{pet.breed}</p>
                         </div>
 
-                        <div style={{ marginBottom: '2rem' }}>
-                            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                {/* <Info size={20} className="text-secondary" /> */}
+                        <div>
+                            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 About {pet.name}
                             </h3>
                             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '1.1rem' }}>
@@ -98,17 +100,15 @@ const PetDetails = () => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                         <div className="card" style={{ background: 'var(--surface-alt)', border: 'none' }}>
                             <div className="grid grid-cols-2 gap-md">
-                                <div style={{ background: 'white', padding: '1rem', borderRadius: 'var(--radius-lg)', textAlign: 'center' }}>
+                                <div className="stat-card">
                                     <Calendar size={24} style={{ color: 'var(--secondary)', margin: '0 auto 0.5rem' }} />
-                                    <p style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Age</p>
-                                    <p style={{ fontWeight: 700, fontSize: '1.25rem' }}>{pet.age} <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>yrs</span></p>
+                                    <p className="stat-label">Age</p>
+                                    <p className="stat-value">{pet.age} <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>yrs</span></p>
                                 </div>
-                                <div style={{ background: 'white', padding: '1rem', borderRadius: 'var(--radius-lg)', textAlign: 'center' }}>
-                                    {/* <Activity size={24} style={{ color: 'var(--accent)', margin: '0 auto 0.5rem' }} /> */}
-                                    <p style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Status</p>
-                                    <p style={{ fontWeight: 700, fontSize: '1rem', textTransform: 'capitalize' }}>{pet.status}</p>
+                                <div className="stat-card">
+                                    <p className="stat-label">Status</p>
+                                    <p className="stat-value" style={{ fontSize: '1rem', textTransform: 'capitalize' }}>{pet.status}</p>
                                 </div>
-
                             </div>
                         </div>
 

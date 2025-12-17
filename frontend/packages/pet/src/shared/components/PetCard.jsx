@@ -1,10 +1,16 @@
-import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 
-const PetCard = ({ pet }) => {
+const PetCard = ({ pet, index = 0 }) => {
     return (
-        <div className="pet-card group">
+        <div
+            className="pet-card group animate-fade-in-up"
+            style={{ animationDelay: `${index * 100}ms` }}
+        >
             <div className="pet-image-container">
+                <div
+                    className="pet-image-blur"
+                    style={{ backgroundImage: `url(${pet.images && pet.images.length > 0 ? pet.images[0] : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80'})` }}
+                ></div>
                 <img
                     src={pet.images && pet.images.length > 0 ? pet.images[0] : 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80'}
                     alt={pet.name}
