@@ -71,7 +71,7 @@ const Login = () => {
                     Sign In
                 </button>
                 <div className="auth-footer">
-                    Don't have an account? <a href="http://localhost:3001/register" className="auth-link">Create Account</a>
+                    Don't have an account? <a href="http://localhost:3001/register" className="auth-link register-btn">Create Account</a>
                 </div>
             </form>
         </>

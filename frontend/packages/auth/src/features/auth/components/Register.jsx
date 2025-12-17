@@ -69,7 +69,7 @@ const Register = () => {
                     Sign Up
                 </button>
                 <div className="auth-footer">
-                    Already have an account? <a href="http://localhost:3001/login" className="auth-link">Sign In</a>
+                    Already have an account? <a href="http://localhost:3001/login" className="auth-link register-btn">Sign In</a>
                 </div>
             </form>
         </>

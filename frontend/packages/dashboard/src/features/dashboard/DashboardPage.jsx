@@ -49,7 +49,7 @@ const Dashboard = () => {
                                 padding: '0.5rem',
                                 borderRadius: 'var(--radius-sm)',
                                 background: viewMode === 'grid' ? 'var(--background)' : 'transparent',
-                                color: viewMode === 'grid' ? 'var(--text-primary)' : 'var(--text-secondary)',
+                                color: viewMode === 'table' ? 'white' : '#030303ff',
                                 cursor: 'pointer',
                                 border: 'none'
                             }}
@@ -63,7 +63,7 @@ const Dashboard = () => {
                                 padding: '0.5rem',
                                 borderRadius: 'var(--radius-sm)',
                                 background: viewMode === 'table' ? 'var(--background)' : 'transparent',
-                                color: viewMode === 'table' ? 'var(--text-primary)' : 'var(--text-secondary)',
+                                color: viewMode === 'table' ? 'white' : '#030303ff',
                                 cursor: 'pointer',
                                 border: 'none'
                             }}
