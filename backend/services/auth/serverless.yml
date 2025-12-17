@@ -1,0 +1,25 @@
+service: auth-service
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  timeout: 30
+  environment:
+    MONGO_URI: ${env:MONGO_URI}
+    JWT_SECRET: ${env:JWT_SECRET}
+
+functions:
+  api:
+    handler: src/index.handler
+    events:
+      - http:
+          path: /api/auth/{proxy+}
+          method: ANY
+      - http:
+          path: /api/auth
+          method: ANY
+
+plugins:
+  - serverless-offline
